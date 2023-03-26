@@ -1,14 +1,9 @@
-import Head from 'next/head';
-import Image from 'next/image';
-import { Inter } from 'next/font/google';
-import styles from '@/styles/Home.module.css';
-
-const inter = Inter({ subsets: ['latin'] });
-
-export default function Home() {
+function HomePage() {
   return (
-    <>
-      <h1>Hello World!</h1>
-    </>
+    <div>
+      <h1>Featured Events</h1>
+    </div>
   );
 }
+
+export default HomePage;
