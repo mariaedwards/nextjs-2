@@ -13,8 +13,8 @@ function FilteredEventsPage() {
   const numMonth = Number(month);
 
   if (
-    isNaN(numYear) ||
-    isNaN(numMonth) ||
+    Number.isNaN(numYear) ||
+    Number.isNaN(numMonth) ||
     numMonth < 1 ||
     numMonth > 12 ||
     numYear < 2021 ||
