@@ -5,6 +5,12 @@ import { useEffect, useState } from 'react';
 import Head from 'next/head';
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
+const pageHeadJSX = (
+  <Head>
+    <title>Events</title>
+    <meta name="description" content="Lorem" />
+  </Head>
+);
 
 function FilteredEventsPage() {
   const [loadedEvents, setLoadedEvents] = useState();
@@ -33,7 +39,12 @@ function FilteredEventsPage() {
   }, [data]);
 
   if (!loadedEvents) {
-    return <p className="center">Loading...</p>;
+    return (
+      <>
+        {pageHeadJSX}
+        <p className="center">Loading...</p>
+      </>
+    );
   }
 
   const filteredYear = filterData[0];
@@ -51,7 +62,12 @@ function FilteredEventsPage() {
     numMonth > 12 ||
     error
   ) {
-    return <p>Invalid filter. Please adjust your values!</p>;
+    return (
+      <>
+        {pageHeadJSX}
+        <p>Invalid filter. Please adjust your values!</p>
+      </>
+    );
   }
 
   const filteredEvents = loadedEvents.filter((event) => {
@@ -66,10 +82,7 @@ function FilteredEventsPage() {
 
   return (
     <>
-      <Head>
-        <title>Events</title>
-        <meta name="description" content="Lorem" />
-      </Head>
+      {pageHeadJSX}
       <EventsList items={filteredEvents} />
     </>
   );
