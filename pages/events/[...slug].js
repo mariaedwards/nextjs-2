@@ -1,35 +1,72 @@
-import { getFilteredEvents } from '../../dummy-data';
+import { getFilteredEvents } from '../../helpers/api-util';
 import EventsList from '../../components/events/EventsList';
+import useSWR from 'swr';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
 function FilteredEventsPage() {
+  const [loadedEvents, setLoadedEvents] = useState();
   const router = useRouter();
-  const filteredData = router.query.slug;
-  if (!filteredData) {
-    return <p>Loading...</p>;
+
+  const filterData = router.query.slug;
+
+  const { data, error } = useSWR(
+    'https://nextjs-demo-events-default-rtdb.firebaseio.com/events.json',
+    fetcher
+  );
+
+  useEffect(() => {
+    if (data) {
+      const events = [];
+
+      for (const key in data) {
+        events.push({
+          id: key,
+          ...data[key],
+        });
+      }
+
+      setLoadedEvents(events);
+    }
+  }, [data]);
+
+  if (!loadedEvents) {
+    return <p className="center">Loading...</p>;
   }
-  const [year, month] = filteredData;
-  const numYear = Number(year);
-  const numMonth = Number(month);
+
+  const filteredYear = filterData[0];
+  const filteredMonth = filterData[1];
+
+  const numYear = +filteredYear;
+  const numMonth = +filteredMonth;
 
   if (
     Number.isNaN(numYear) ||
     Number.isNaN(numMonth) ||
+    numYear > 2030 ||
+    numYear < 2021 ||
     numMonth < 1 ||
     numMonth > 12 ||
-    numYear < 2021 ||
-    numYear > 2030
+    error
   ) {
-    return <p>Invalid year or month</p>;
+    return <p>Invalid filter. Please adjust your values!</p>;
   }
-  const events = getFilteredEvents({ year: numYear, month: numMonth });
-  if (!events || events.length === 0) {
-    return <p>No Events</p>;
-  }
+
+  const filteredEvents = loadedEvents.filter((event) => {
+    const eventDate = new Date(event.date);
+    return (
+      eventDate.getFullYear() === numYear &&
+      eventDate.getMonth() === numMonth - 1
+    );
+  });
+
+  const date = new Date(numYear, numMonth - 1);
 
   return (
     <>
-      <EventsList items={events} />
+      <EventsList items={filteredEvents} />
     </>
   );
 }
