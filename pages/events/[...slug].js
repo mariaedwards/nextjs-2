@@ -2,6 +2,7 @@ import EventsList from '../../components/events/EventsList';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import Head from 'next/head';
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -65,6 +66,10 @@ function FilteredEventsPage() {
 
   return (
     <>
+      <Head>
+        <title>Events</title>
+        <meta name="description" content="Lorem" />
+      </Head>
       <EventsList items={filteredEvents} />
     </>
   );
