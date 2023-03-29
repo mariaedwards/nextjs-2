@@ -1,4 +1,3 @@
-import { getFilteredEvents } from '../../helpers/api-util';
 import EventsList from '../../components/events/EventsList';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
