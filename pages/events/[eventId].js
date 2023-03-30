@@ -3,6 +3,7 @@ import EventContent from '../../components/event-detail/EventContent';
 import EventLogistics from '../../components/event-detail/EventLogistics';
 import EventSummary from '../../components/event-detail/EventSummary';
 import Head from 'next/head';
+import Comments from '@/components/input/Comments';
 
 function EventPage(props) {
   const { event } = props;
@@ -26,6 +27,7 @@ function EventPage(props) {
       <EventContent>
         <p>{event.description}</p>
       </EventContent>
+      <Comments eventId={event.id} />
     </>
   );
 }
