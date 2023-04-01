@@ -21,7 +21,6 @@ async function handler(req, res) {
       await client.connect();
       const collection = client.db('newsletter').collection('comments');
       const result = await collection.find().sort({ _id: -1 }).toArray();
-      console.log(result);
       res.status(200).json({ comments: result });
     } catch (err) {
       res.status(500).json({ error: 'Server error' });
